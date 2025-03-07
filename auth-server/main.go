@@ -8,6 +8,7 @@ import (
 
 func main() {
 	ec := echo.New()
+	config.Routes(ec)
 	ec.GET("/", func(c echo.Context) error {
 		return c.String(200, "auth server")
 	})
