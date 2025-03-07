@@ -1,6 +1,8 @@
 package main
 
 import (
+	"auth-server/internal/config"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -10,5 +12,7 @@ func main() {
 		return c.String(200, "auth server")
 	})
 
-	ec.Logger.Fatal(ec.Start(":3000"))
+	server := config.NewServer(ec)
+
+	server.ListenAndServe()
 }
