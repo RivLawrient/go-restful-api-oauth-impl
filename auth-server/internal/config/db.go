@@ -3,7 +3,6 @@ package config
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -16,8 +15,6 @@ func GetConnection() *sql.DB {
 	database := os.Getenv("DB_NAME_AUTH")
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
-
-	log.Println(username)
 
 	var dsn string
 

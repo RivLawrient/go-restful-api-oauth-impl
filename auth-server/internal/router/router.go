@@ -8,4 +8,5 @@ import (
 
 func Routes(app *echo.Echo) {
 	app.POST("/users", users.RegisterUsersHandle)
+	app.PUT("/users", users.LoginUsersHandle)
 }

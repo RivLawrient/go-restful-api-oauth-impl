@@ -13,3 +13,23 @@ func Create(id string, req *Users) error {
 
 	return err
 }
+
+func FindByEmail(email string) (*Users, error) {
+	log.Println("FindByEmailUsersRepo")
+
+	query := "SELECT id, username,password, birth_date, created_at FROM users WHERE email=$1"
+	result := config.GetConnection().QueryRow(query, &email)
+
+	if result.Err() != nil {
+		return nil, result.Err()
+	}
+
+	data := new(Users)
+	if err := result.Scan(&data.Id, &data.Username, &data.Password, &data.BirthDate, &data.CreatedAt); err != nil {
+		return nil, err
+	}
+
+	data.Email = email
+
+	return data, nil
+}

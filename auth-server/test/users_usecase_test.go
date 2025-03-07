@@ -15,8 +15,9 @@ func TestCreateSuccess(t *testing.T) {
 		Password:  "random",
 		BirthDate: 123123123123,
 	}
-	err := users.RegisterUsers(&req)
+	resp, err := users.RegisterUsers(&req)
 
+	assert.Equal(t, req.Username, resp.Username)
 	assert.Nil(t, err)
 
 }

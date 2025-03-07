@@ -54,7 +54,51 @@ func RegisterUsersHandle(c echo.Context) error {
 		})
 	}
 
-	// response := RegisterUsers(req)
+	response, err := RegisterUsers(req)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, model.WebResponse[any]{
+			Errors: err.Error(),
+		})
+	}
 
-	return c.JSON(201, req)
+	return c.JSON(200, response)
+}
+
+func LoginUsersHandle(c echo.Context) error {
+	log.Println("LoginUsersHandleController")
+	req := new(LoginUsersRequest)
+	if err := c.Bind(req); err != nil {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: err.Error(),
+		})
+	}
+
+	if req.Email == "" {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: "email field cannot be empty",
+		})
+	}
+
+	if req.Password == "" {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: "password field cannot be empty",
+		})
+	}
+
+	if len(req.Password) < 8 {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: "password length cannot less than 8 character",
+		})
+	}
+
+	response, err := LoginUsers(req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: err.Error(),
+		})
+	}
+
+	return c.JSON(200, model.WebResponse[LoginUsersResponse]{
+		Data: *response,
+	})
 }
