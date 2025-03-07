@@ -3,8 +3,11 @@ package config
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 	"time"
+
+	_ "github.com/lib/pq"
 )
 
 func GetConnection() *sql.DB {
@@ -13,6 +16,8 @@ func GetConnection() *sql.DB {
 	database := os.Getenv("DB_NAME_AUTH")
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
+
+	log.Println(username)
 
 	var dsn string
 
