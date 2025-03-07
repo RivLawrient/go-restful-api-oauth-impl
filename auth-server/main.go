@@ -2,13 +2,14 @@ package main
 
 import (
 	"auth-server/internal/config"
+	"auth-server/internal/router"
 
 	"github.com/labstack/echo/v4"
 )
 
 func main() {
 	ec := echo.New()
-	config.Routes(ec)
+	router.Routes(ec)
 	ec.GET("/", func(c echo.Context) error {
 		return c.String(200, "auth server")
 	})

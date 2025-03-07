@@ -1,7 +1,60 @@
 package users
 
-import "github.com/labstack/echo/v4"
+import (
+	"auth-server/internal/helper"
+	"auth-server/internal/model"
+	"log"
+	"net/http"
 
-func GetUsersHanle(c echo.Context) error {
-	return c.String(201, "users")
+	"github.com/labstack/echo/v4"
+)
+
+func RegisterUsersHandle(c echo.Context) error {
+	log.Println("RegisterUsersController")
+	req := new(NewUsersRequest)
+	if err := c.Bind(req); err != nil {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: err.Error(),
+		})
+	}
+
+	if req.Username == "" {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: "username field cannot be empty",
+		})
+	}
+
+	if req.Email == "" {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: "email field cannot be empty",
+		})
+	}
+
+	if !helper.EmailValidation(req.Email) {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: "email format is invalid",
+		})
+	}
+
+	if req.Password == "" {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: "password field cannot be empty",
+		})
+	}
+
+	if len(req.Password) < 8 {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: "password length cannot less than 8 character",
+		})
+	}
+
+	if req.BirthDate == 0 {
+		return c.JSON(http.StatusBadRequest, model.WebResponse[any]{
+			Errors: "birth_date field cannot be empty",
+		})
+	}
+
+	// response := RegisterUsers(req)
+
+	return c.JSON(201, req)
 }
