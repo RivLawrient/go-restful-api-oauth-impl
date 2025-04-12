@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 
@@ -14,6 +13,6 @@ func NewServer(ech *echo.Echo) *http.Server {
 		Handler: ech,
 	}
 
-	fmt.Println("server running at ", server.Addr)
+	// fmt.Println("server running at ", server.Addr)
 	return &server
 }

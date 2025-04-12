@@ -5,6 +5,7 @@ import (
 	"auth-server/internal/model"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -97,6 +98,12 @@ func LoginUsersHandle(c echo.Context) error {
 			Errors: err.Error(),
 		})
 	}
+
+	cookies := new(http.Cookie)
+	cookies.Name = "token_access"
+	cookies.Value = response.TokenJwt
+	cookies.Expires = time.Now().Add(1 * time.Hour)
+	c.SetCookie(cookies)
 
 	return c.JSON(200, model.WebResponse[LoginUsersResponse]{
 		Data: *response,

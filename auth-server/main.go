@@ -3,6 +3,7 @@ package main
 import (
 	"auth-server/internal/config"
 	"auth-server/internal/router"
+	"fmt"
 
 	"github.com/labstack/echo/v4"
 )
@@ -15,6 +16,6 @@ func main() {
 	})
 
 	server := config.NewServer(ec)
-
+	fmt.Println(server.Addr)
 	server.ListenAndServe()
 }

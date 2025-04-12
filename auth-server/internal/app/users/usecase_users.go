@@ -1,6 +1,7 @@
 package users
 
 import (
+	"database/sql"
 	"errors"
 	"log"
 	"time"
@@ -46,12 +47,15 @@ func LoginUsers(req *LoginUsersRequest) (*LoginUsersResponse, error) {
 
 	user, err := FindByEmail(req.Email)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, errors.New("email or password is invalid")
+		}
 		return nil, err
 	}
 
 	result := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
 	if result != nil {
-		return nil, errors.New("password is invalid")
+		return nil, errors.New("email or password is invalid")
 	}
 
 	key := "soem"

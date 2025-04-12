@@ -33,3 +33,12 @@ func FindByEmail(email string) (*Users, error) {
 
 	return data, nil
 }
+
+func DeleteAll() error {
+	log.Println("DeleteAllUsersRepo")
+
+	query := "TRUNCATE users"
+	_, err := config.GetConnection().Exec(query)
+
+	return err
+}
